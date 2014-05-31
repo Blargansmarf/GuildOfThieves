@@ -19,7 +19,24 @@ namespace GuildOfThieves
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        MouseState prevMouseState, currMouseState;
+        KeyboardState prevKeyState, currKeyState;
+        GamePadState prevGamePadState, currGamePadState;
+
+        Vector2 translation;
+        Vector2 startLoc;
+        Vector2 playerLoc;
+
+        Rectangle tempMapShape;
+
+        Texture2D playerTexture;
+
+        float screenWidth, screenHeight;
+
+        
+
         public Game1()
+            : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -33,7 +50,11 @@ namespace GuildOfThieves
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            translation = new Vector2();
+
+            screenHeight = graphics.GraphicsDevice.Viewport.Height;
+            screenWidth = graphics.GraphicsDevice.Viewport.Width;
+            tempMapShape = new Rectangle((int)(screenWidth / 2) - 200, (int)(screenHeight / 2) - 200, 400, 400);
 
             base.Initialize();
         }
@@ -47,7 +68,10 @@ namespace GuildOfThieves
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            playerTexture = Content.Load<Texture2D>("WhiteSquare");
+
+            startLoc = new Vector2(screenWidth / 2 - playerTexture.Width / 2, screenHeight / 2 - playerTexture.Height - 2);
+            playerLoc = new Vector2(startLoc.X, startLoc.Y);
         }
 
         /// <summary>
@@ -66,11 +90,17 @@ namespace GuildOfThieves
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            currMouseState = Mouse.GetState();
+            currKeyState = Keyboard.GetState();
+            currGamePadState = GamePad.GetState(PlayerIndex.One);
 
-            // TODO: Add your update logic here
+            ProcessMouse();
+            ProcessKeyboard();
+            ProcessGamePad();
+
+            prevMouseState = currMouseState;
+            prevKeyState = currKeyState;
+            prevGamePadState = currGamePadState;
 
             base.Update(gameTime);
         }
@@ -83,9 +113,82 @@ namespace GuildOfThieves
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            //translated
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateTranslation(-translation.X, -translation.Y, 0));
+
+            spriteBatch.Draw(playerTexture, tempMapShape, Color.White);
+
+            spriteBatch.End();
+
+            //Not translated
+            spriteBatch.Begin();
+
+            spriteBatch.Draw(playerTexture, startLoc, Color.Red);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void ProcessMouse()
+        {
+
+        }
+
+        private void ProcessKeyboard()
+        {
+            if (currKeyState.IsKeyDown(Keys.W) &&
+                playerLoc.Y > tempMapShape.Top)
+            {
+                translation.Y--;
+                playerLoc.Y--;
+            }
+            if (currKeyState.IsKeyDown(Keys.S) &&
+                playerLoc.Y + playerTexture.Height < tempMapShape.Bottom)
+            {
+                translation.Y++;
+                playerLoc.Y++;
+            }
+            if (currKeyState.IsKeyDown(Keys.A) &&
+                playerLoc.X > tempMapShape.Left)
+            {
+                translation.X--;
+                playerLoc.X--;
+            }
+            if (currKeyState.IsKeyDown(Keys.D) &&
+                playerLoc.X + playerTexture.Width < tempMapShape.Right)
+            {
+                translation.X++;
+                playerLoc.X++;
+            }
+        }
+
+        private void ProcessGamePad()
+        {
+            if (currGamePadState.ThumbSticks.Left.Y > 0 &&
+                playerLoc.Y > tempMapShape.Top)
+            {
+                translation.Y--;
+                playerLoc.Y--;
+            }
+            if (currGamePadState.ThumbSticks.Left.Y < 0 &&
+                playerLoc.Y + playerTexture.Height < tempMapShape.Bottom)
+            {
+                translation.Y++;
+                playerLoc.Y++;
+            }
+            if (currGamePadState.ThumbSticks.Left.X < 0 &&
+                playerLoc.X > tempMapShape.Left)
+            {
+                translation.X--;
+                playerLoc.X--;
+            }
+            if (currGamePadState.ThumbSticks.Left.X > 0 &&
+                playerLoc.X + playerTexture.Width < tempMapShape.Right)
+            {
+                translation.X++;
+                playerLoc.X++;
+            }
         }
     }
 }
