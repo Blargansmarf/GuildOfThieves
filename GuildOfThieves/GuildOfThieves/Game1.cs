@@ -54,8 +54,8 @@ namespace GuildOfThieves
             screenWidth = graphics.GraphicsDevice.Viewport.Width;
 
             player.Initialize();
-            translation = level.Initialize("level.txt");
-            player.loc -= translation;
+            translation = level.Initialize("Content/level.txt");
+            player.loc += translation;
 
 
             translation = new Vector2();
@@ -117,7 +117,7 @@ namespace GuildOfThieves
             //translated
             spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Matrix.CreateTranslation(-translation.X, -translation.Y, 0));
 
-            spriteBatch.Draw(player.texture, tempMapShape, Color.White);
+            spriteBatch.Draw(player.texture, level.room, Color.White);
 
             spriteBatch.End();
 

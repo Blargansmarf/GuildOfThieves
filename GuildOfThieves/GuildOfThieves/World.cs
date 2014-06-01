@@ -18,15 +18,15 @@ namespace GuildOfThieves
         GraphicsDeviceManager graphics;
         ContentManager content;
 
-        Rectangle room;
+        public Rectangle room;
 
-        struct platform
+        public struct platform
         {
             public Rectangle shape;
             public bool soft;
         }
 
-        List<platform> platforms;
+        public List<platform> platforms;
 
         public World(GraphicsDeviceManager g, ContentManager c)
         {
@@ -39,7 +39,6 @@ namespace GuildOfThieves
             Vector2 startLoc = new Vector2();
             platforms = new List<platform>();
             room = new Rectangle();
-
 
             StreamReader sr = new StreamReader(filename);
             String s = sr.ReadToEnd();
