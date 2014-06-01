@@ -27,18 +27,12 @@ namespace GuildOfThieves
             content = c;
         }
 
-        public void Initialize(string s)
+        public void Initialize()
         {
-            texture = content.Load<Texture2D>(s);
-
+            texture = content.Load<Texture2D>("WhiteSquare");
 
             startLoc = new Vector2(Game1.screenWidth / 2 - texture.Width / 2, Game1.screenHeight / 2 - texture.Height - 2);
             new Vector2(startLoc.X, startLoc.Y);
-        }
-
-        public void LoadContent()
-        {
-            
         }
 
         public void Draw(SpriteBatch sBatch)

@@ -30,6 +30,7 @@ namespace GuildOfThieves
         public static float screenWidth, screenHeight;
 
         Player player;
+        World level;
 
         public Game1()
             : base()
@@ -47,11 +48,15 @@ namespace GuildOfThieves
         protected override void Initialize()
         {
             player = new Player(graphics, Content);
+            level = new World(graphics, Content);
 
             screenHeight = graphics.GraphicsDevice.Viewport.Height;
             screenWidth = graphics.GraphicsDevice.Viewport.Width;
 
-            player.Initialize("WhiteSquare");
+            player.Initialize();
+            translation = level.Initialize("level.txt");
+            player.loc -= translation;
+
 
             translation = new Vector2();
 
