@@ -13,6 +13,40 @@ namespace GuildOfThieves
 {
     public class Player
     {
+        public Vector2 startLoc;
+        public Vector2 loc;
 
+        public Texture2D texture;
+
+        GraphicsDeviceManager graphics;
+        ContentManager content;
+
+        public Player(GraphicsDeviceManager g)
+        {
+            graphics = g;
+            //content = c;
+        }
+
+        public void Initialize()
+        {
+            texture = content.Load<Texture2D>("WhiteSquare");
+
+            //startLoc = new Vector2(Game1.screenWidth / 2 - texture.Width / 2, Game1.screenHeight / 2 - texture.Height - 2);
+            loc = new Vector2(startLoc.X, startLoc.Y);
+        }
+
+        public void LoadContent()
+        {
+            
+        }
+
+        public void Draw(SpriteBatch sBatch)
+        {
+            sBatch.Begin();
+
+            sBatch.Draw(texture, startLoc, Color.Red);
+            
+            sBatch.End();
+        }
     }
 }
