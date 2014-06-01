@@ -21,18 +21,19 @@ namespace GuildOfThieves
         GraphicsDeviceManager graphics;
         ContentManager content;
 
-        public Player(GraphicsDeviceManager g)
+        public Player(GraphicsDeviceManager g, ContentManager c)
         {
             graphics = g;
-            //content = c;
+            content = c;
         }
 
-        public void Initialize()
+        public void Initialize(string s)
         {
-            texture = content.Load<Texture2D>("WhiteSquare");
+            texture = content.Load<Texture2D>(s);
 
-            //startLoc = new Vector2(Game1.screenWidth / 2 - texture.Width / 2, Game1.screenHeight / 2 - texture.Height - 2);
-            loc = new Vector2(startLoc.X, startLoc.Y);
+
+            startLoc = new Vector2(Game1.screenWidth / 2 - texture.Width / 2, Game1.screenHeight / 2 - texture.Height - 2);
+            new Vector2(startLoc.X, startLoc.Y);
         }
 
         public void LoadContent()
